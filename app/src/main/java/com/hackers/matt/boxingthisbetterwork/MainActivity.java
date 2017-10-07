@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     Button button,button2,button3;
     TextView timerText;
     LinearLayout layout;
+    int secondsPassed = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
                 min = (millisUntilFinished/(1000*60));
                 sec = (millisUntilFinished/1000 - min * 60);
                 if(sec < 10)
-                    textView.setText(Long.toString(min) + ":0"+  Long.toString(sec));
+                    timerText.setText(Long.toString(min) + ":0"+  Long.toString(sec));
                 else
-                    textView.setText(Long.toString(min)+ ":" + Long.toString(sec));
+                    timerText.setText(Long.toString(min)+ ":" + Long.toString(sec));
                 secondsPassed++;
                 playCombo();
                 if(millisUntilFinished == 30 * 1000)
