@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextTheme" parent="AppTheme">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:textSize">24pt</item>
+    </style>
+
 </resources>
