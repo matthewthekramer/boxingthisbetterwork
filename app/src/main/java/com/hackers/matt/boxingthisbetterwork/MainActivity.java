@@ -32,7 +32,10 @@ public class MainActivity extends AppCompatActivity {
         timerText = (EditText) findViewById(R.id.countdownClock);
         layout = (LinearLayout) findViewById(R.id.mainLayout);
 
-        final CountDownTimer ctd = new CountDownTimer(100000, 1000) {
+        int time = Integer.parseInt(timerText.getText().toString().split(":")[0]) * 60 * 1000 +
+                Integer.parseInt(timerText.getText().toString().split(":")[1]) * 1000;
+        Log.v("TIMER:", "" + time);
+        final CountDownTimer ctd = new CountDownTimer(time, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
