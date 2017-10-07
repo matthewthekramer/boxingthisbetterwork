@@ -1,10 +1,14 @@
 package com.hackers.matt.boxingthisbetterwork;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.os.CountDownTimer;
 import android.media.AudioTrack;
@@ -15,11 +19,11 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     public boolean paused = false;
-    long milliLeft = 300000;
-    int secondsPassed = 0 ;
-    long min,sec;
+    public boolean canceled = false;
+    long milliLeft,min,sec;
     Button button,button2,button3;
-    TextView textView;
+    TextView timerText;
+    LinearLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +32,11 @@ public class MainActivity extends AppCompatActivity {
         button = (Button) findViewById(R.id.Start);
         button2 = (Button) findViewById(R.id.Pause);
         button3 = (Button) findViewById(R.id.Reset);
-        textView = (TextView) findViewById(R.id.countdownClock);
-        final CountDownTimer ctd = new CountDownTimer(65000, 1000) {
+        timerText = (EditText) findViewById(R.id.countdownClock);
+        layout = (LinearLayout) findViewById(R.id.mainLayout);
+
+        final CountDownTimer ctd = new CountDownTimer(100000, 1000) {
+
             @Override
             public void onTick(long millisUntilFinished) {
                 milliLeft = millisUntilFinished - (secondsPassed * 1000);
@@ -47,8 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                textView.setText("0:00");
-                playRest();
+                timerText.setText("FINISH!!!!");
+                layout.setBackgroundColor(ContextCompat.getColor(layout.getContext(), R.color.colorDone));
+                timerText.setEnabled(true);
             }
 
         };
@@ -56,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
         {
             public void onClick(View v) {
                 ctd.start();
+                View someView = findViewById(R.id.mainLayout);
+                View root = someView.getRootView();
+                layout.setBackgroundColor(ContextCompat.getColor(layout.getContext(), R.color.colorActive));
+                timerText.setEnabled(false);
             }
 
         });
