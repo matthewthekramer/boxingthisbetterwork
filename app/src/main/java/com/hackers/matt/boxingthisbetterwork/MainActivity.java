@@ -11,10 +11,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.os.CountDownTimer;
+import android.media.AudioTrack;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import org.w3c.dom.Text;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    public int counter,pausedCounter = 0;
     public boolean paused = false;
     public boolean canceled = false;
     long milliLeft,min,sec;
@@ -39,10 +42,17 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                milliLeft = millisUntilFinished;
-                min = (milliLeft/(1000*60));
-                sec = (milliLeft/1000 - min * 60);
-                timerText.setText(Long.toString(min)+ ":" + Long.toString(sec));
+                milliLeft = millisUntilFinished - (secondsPassed * 1000);
+                min = (millisUntilFinished/(1000*60));
+                sec = (millisUntilFinished/1000 - min * 60);
+                if(sec < 10)
+                    textView.setText(Long.toString(min) + ":0"+  Long.toString(sec));
+                else
+                    textView.setText(Long.toString(min)+ ":" + Long.toString(sec));
+                secondsPassed++;
+                playCombo();
+                if(millisUntilFinished == 30 * 1000)
+                    playWarning();
             }
 
             @Override
@@ -64,25 +74,86 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-       /** Trying to get pause button to work...
-        *
-        *
-        * button2.setOnClickListener(new View.OnClickListener() {
+        button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
                 ctd.cancel();
-                paused = true;
             }
         });
-*/
+
         button3.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
             {
                 ctd.cancel();
-                milliLeft = 300000;
+                secondsPassed = 0;
             }
         });
+    }
+
+    public void playRest(){
+        MediaPlayer mp = MediaPlayer.create(this, R.raw.timer_finished);
+        mp.setVolume(0.05f, 0.05f);
+        mp.start();
+        System.out.print("rest");
+    }
+
+    public void playCombo() {
+        MediaPlayer mp = null;
+        Random rand = new Random();
+        int numMoves = rand.nextInt(6);
+        for (int i = 0; i < numMoves; i++) {
+            int move = rand.nextInt(12);
+            switch (move) {
+                case 0:
+                    mp = MediaPlayer.create(this, R.raw.bob);
+                    mp.start();
+                    mp = null;
+                    break;
+                case 1:
+                    mp = MediaPlayer.create(this, R.raw.slipl);
+                    mp.start();
+                    break;
+                case 2:
+                    mp = MediaPlayer.create(this, R.raw.slipr);
+                    mp.start();
+                    break;
+                case 3:
+                    mp = MediaPlayer.create(this, R.raw.one);
+                    mp.start();
+                    break;
+                case 4:
+                    mp = MediaPlayer.create(this, R.raw.two);
+                    mp.start();
+                    break;
+                case 5:
+                    mp = MediaPlayer.create(this, R.raw.three);
+                    mp.start();
+                    break;
+                case 6:
+                    mp = MediaPlayer.create(this, R.raw.four);
+                    mp.start();
+                    break;
+                case 7:
+                    mp = MediaPlayer.create(this, R.raw.five);
+                    mp.start();
+                    break;
+                case 8:
+                    mp = MediaPlayer.create(this, R.raw.six);
+                    mp.start();
+                    break;
+                default:
+                    break;
+            }
+            mp = null;
+        }
+    }
+
+    public void playWarning() {
+        System.out.println("warning");
+        MediaPlayer mp = MediaPlayer.create(this, R.raw.round_warning);
+        mp.setVolume(0.05f, 0.05f);
+        mp.start();
     }
 }
 
